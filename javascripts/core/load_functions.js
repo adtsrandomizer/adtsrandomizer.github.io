@@ -378,8 +378,6 @@ if (player.version < 5) {
   respecToggle()
   toggleEternityConf()
   toggleEternityConf()
-  toggleCommas()
-  toggleCommas()
   if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
   if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
   if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"

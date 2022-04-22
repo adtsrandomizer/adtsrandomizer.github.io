@@ -295,7 +295,6 @@ function respecTimeStudies() {
   studyCosts = getCostsArray();
   for (var i=0; i<all.length; i++) {
       if (player.timestudy.studies.includes(all[i])) {
-          console.log(studyCosts[i]);
           player.timestudy.theorem += studyCosts[i];
       }
   }
