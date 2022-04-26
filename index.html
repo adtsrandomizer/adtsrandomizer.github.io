@@ -73,7 +73,6 @@
                     <td><button class="storebtn" onclick="randomizeStudies()" style="width:150px; height: 45px; font-size: 10px; margin: auto">Randomize Studies</button><td>
                     <td><button class="storebtn" onclick="respecToggle()" id="respec" style="width:150px; height: 45px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
                     <td><button class="storebtn" onclick="randomizeModeChange()" id="randmode" style="width:150px; height: 45px; font-size: 10px; margin: auto">Price Randomizer Mode: 7/8 to 9/8 of Vanilla position price</button><td>
-                    <td><button class="storebtn" onclick="randomizeECChange()" id="randecmode" style="width:150px; height: 45px; font-size: 10px; margin: auto">EC Randomizer: Enabled</button><td>
                     <td><button class="storebtn" onclick="copySeed()" style="width:150px; height: 45px; font-size: 10px; margin: auto">Export Tree Layout</button><td>
                     <div style="display: none;"><textarea id="seedoutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
                 </tr>
@@ -1856,7 +1855,7 @@
                     <tr>
                         <td>
                             <div class="eterchallengediv" id="eterc1div" style="height: 140px; display: none">
-                                <span id="eterc1text">Time Dimensions are disabled.</span>
+                                <span>Time Dimensions are disabled.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -1870,7 +1869,7 @@
                         </td>
                         <td>
                             <div class="eterchallengediv" id="eterc2div" style="height: 140px; display: none">
-                                <span id="eterc2text">Time Dimensions are disabled.</span>
+                                <span>Infinity Dimensions are disabled.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -1886,7 +1885,7 @@
                     <tr>
                         <td>
                             <div class="eterchallengediv" id="eterc3div" style="height: 140px; display: none">
-                                <span id="eterc3text">Time Dimensions are disabled.</span>
+                                <span>Dimensions 5-8 don't produce anything. Dimensional sacrifice is disabled.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -1900,7 +1899,7 @@
                         </td>
                         <td>
                             <div class="eterchallengediv" id="eterc4div" style="height: 140px; display: none">
-                                <span id="eterc4text">Time Dimensions are disabled.</span>
+                                <span>All infinitied stat multipliers and generators are disabled.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -1916,7 +1915,7 @@
                     <tr>
                         <td>
                             <div class="eterchallengediv" id="eterc5div" style="height: 140px; display: none">
-                                <span id="eterc5text">Time Dimensions are disabled.</span>
+                                <span>Galaxy cost increase scaling starts instantly (Normally at 100 galaxies). Dimension boost costs scaling is massively increased.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -1930,7 +1929,7 @@
                         </td>
                         <td>
                             <div class="eterchallengediv" id="eterc6div" style="height: 140px; display: none">
-                                <span id="eterc6text">Time Dimensions are disabled.</span>
+                                <span>You can't gain galaxies normally, but the cost of upgrading your max replicanti galaxies is massively reduced.
                                 </span>
                                 <br>
                                 <br>
@@ -1947,7 +1946,7 @@
                     <tr>
                         <td>
                             <div class="eterchallengediv" id="eterc7div" style="height: 140px; display: none">
-                                <span id="eterc7text">Time Dimensions are disabled.</span>
+                                <span>First Time Dimension produces Eighth Infinity Dimension, and First Infinity Dimension produces Seventh Dimensions. Tickspeed affects all dimensions normally.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -1961,7 +1960,7 @@
                         </td>
                         <td>
                             <div class="eterchallengediv" id="eterc8div" style="height: 140px; display: none">
-                                <span id="eterc8text">Time Dimensions are disabled.</span>
+                                <span>You can only upgrade Infinity Dimensions 50 times, and Replicanti upgrades 40 times.
                                 </span>
                                 <br>
                                 <br>
@@ -1978,7 +1977,7 @@
                     <tr>
                         <td>
                             <div class="eterchallengediv" id="eterc9div" style="height: 140px; display: none">
-                                <span id="eterc9text">Time Dimensions are disabled.</span>
+                                <span>You can't buy tickspeed upgrades. Infinity power instead multiplies time dimensions with greatly reduced effect.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -1992,7 +1991,8 @@
                         </td>
                         <td>
                             <div class="eterchallengediv" id="eterc10div" style="height: 140px; display: none">
-                                <span id="eterc10text">thk is adorable like and subscribe if you agree</span>
+                                <span>Time Dimensions and Infinity Dimensions are disabled, You gain an immense boost from infinitied stat to normal dimensions<br>
+                                    (infinitied^1000) Currently: <span id="ec10span">xX</span>
                                 </span>
                                 <br>
                                 <br>
@@ -2009,7 +2009,7 @@
                     <tr>
                         <td>
                             <div class="eterchallengediv" id="eterc11div" style="height: 140px; display: none">
-                                <span id="eterc11text">All trash multipliers are trashed except for the trashtipliers from Trash power and trash boosts (to trash dimensions)</span>
+                                <span>All dimension multipliers are disabled except for the multipliers from Infinity power and dimension boosts (to normal dimensions)</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -2023,7 +2023,7 @@
                         </td>
                         <td>
                             <div class="eterchallengediv" id="eterc12div" style="height: 140px; display: none">
-                                <span id="eterc12text">The game runs 1000x slower. <3 i love you ec12</span>
+                                <span>The game runs 1000x slower.</span>
                                 <br>
                                 <br>
                                 <div class="outer">

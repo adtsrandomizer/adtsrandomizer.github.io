@@ -1,7 +1,7 @@
 //time dimensions
 
 function getTimeDimensionPower(tier) {
-  if (hasNerf('15')) return new Decimal(1)
+  if (player.currentEternityChall == "eterc11") return new Decimal(1)
   var dim = player["timeDimension"+tier]
   var ret = dim.power.pow(2)
 
@@ -17,7 +17,7 @@ function getTimeDimensionPower(tier) {
   if (player.effectiveStudies.includes(151)) ret = ret.times(1e4)
   if (player.effectiveStudies.includes(221)) ret = ret.times(Decimal.pow(1.0025, player.resets))
   if (player.effectiveStudies.includes(227) && tier == 4) ret = ret.times(Math.max(Math.pow(calcTotalSacrificeBoost().log10(), 10), 1))
-  if (hasBuff('3')) ret = ret.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), 4)).max(1))
+  if (player.currentEternityChall == "eterc9") ret = ret.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), 4)).max(1))
   if (ECTimesCompleted("eterc1") !== 0) ret = ret.times(Math.pow(Math.max(player.thisEternity*10, 0.9), 0.3+(ECTimesCompleted("eterc1")*0.05)))
   let ec10bonus = new Decimal(1)
   if (ECTimesCompleted("eterc10") !== 0) ec10bonus = new Decimal(Math.max(Math.pow(getInfinitied(), 0.9) * ECTimesCompleted("eterc10") * 0.000002+1, 1))
@@ -52,15 +52,15 @@ function getTimeDimensionPower(tier) {
 
 
 function getTimeDimensionProduction(tier) {
-  if (hasNerf('14')) return new Decimal(0)
+  if (player.currentEternityChall == "eterc10") return new Decimal(0)
   var dim = player["timeDimension"+tier]
-  if (hasNerf('15')) return dim.amount
+  if (player.currentEternityChall == "eterc11") return dim.amount
   var ret = dim.amount
   ret = ret.times(getTimeDimensionPower(tier))
-  if (hasBuff('2')) {
+  if (player.currentEternityChall == "eterc7") {
       ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
   }
-  if (hasNerf('1')) return new Decimal(0)
+  if (player.currentEternityChall == "eterc1") return new Decimal(0)
   return ret
 }
 

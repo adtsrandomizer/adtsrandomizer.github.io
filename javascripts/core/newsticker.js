@@ -156,7 +156,6 @@ var s = document.getElementById('news');
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
 var nextMsgIndex;
-var rate = 100;
 function scrollNextMessage() {
   //don't run if hidden to save performance
   if (player.options.newsHidden) return false
@@ -188,6 +187,7 @@ function scrollNextMessage() {
     //distance to travel is s.parentElement.clientWidth + s.clientWidth + parent padding
     //we want to travel at rate pixels per second so we need to travel for (distance / rate) seconds
     let dist = s.parentElement.clientWidth + s.clientWidth + 20; //20 is div_container padding
+    let rate = 100; //change this value to change the scroll speed
     let transformDuration = dist / rate;
 
     if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {

@@ -1,9 +1,10 @@
 function getDimensionFinalMultiplier(tier) {
+  //if (player.currentEternityChall == "eterc3" && tier > 4) return new Decimal(0)
   var name = TIER_NAMES[tier];
 
   let multiplier = new Decimal(player[name + 'Pow']);
 
-  if (hasNerf('15')) return player.infinityPower.pow(7).max(1).times(getDimensionBoostPower().pow(player.resets - tier + 1).max(1))
+  if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(7).max(1).times(getDimensionBoostPower().pow(player.resets - tier + 1).max(1))
   if (player.currentChallenge == "challenge7") {
       if (tier == 4) multiplier = multiplier.pow(1.4)
       if (tier == 2) multiplier = multiplier.pow(1.7)
@@ -11,7 +12,7 @@ function getDimensionFinalMultiplier(tier) {
 
   multiplier = multiplier.times(player.achPow);
 
-  if (hasNerf('13')) multiplier = multiplier;
+  if (player.currentEternityChall == "eterc9") multiplier = multiplier;
   else multiplier = multiplier.times(player.infinityPower.pow(7).max(1))
 
   if (player.infinityUpgrades.includes("totalMult")) multiplier = multiplier.times(totalMult)
@@ -60,7 +61,7 @@ function getDimensionFinalMultiplier(tier) {
 
   if (player.currentChallenge == "postc4" && player.postC4Tier != tier) multiplier = multiplier.pow(0.25)
   if (player.challenges.includes("postc4")) multiplier = multiplier.pow(1.05);
-  if (hasBuff('4')) multiplier = multiplier.times(ec10bonus)
+  if (player.currentEternityChall == "eterc10") multiplier = multiplier.times(ec10bonus)
   if (player.effectiveStudies.includes(193)) multiplier = multiplier.times(Decimal.pow(1.03, player.eternities).min("1e13000"))
   if (tier == 8 && player.effectiveStudies.includes(214)) multiplier = multiplier.times((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1).min(new Decimal("1e125000"))))
   if (multiplier.lt(1)) multiplier = new Decimal(1)
@@ -94,12 +95,12 @@ function getDimensionDescription(tier) {
 }
 
 function getDimensionRateOfChange(tier) {
-  if (tier == 8 || (hasNerf('3') && tier > 3)) {
+  if (tier == 8 || (player.currentEternityChall == "eterc3" && tier > 3)) {
       return 0;
   }
 
   let toGain = getDimensionProductionPerSecond(tier + 1)
-  if (tier == 7 && hasNerf('10')) toGain = DimensionProduction(1).times(10)
+  if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).times(10)
 
   var name = TIER_NAMES[tier];
   if (player.currentChallenge == "challenge7") {
