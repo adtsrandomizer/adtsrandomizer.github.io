@@ -80,9 +80,11 @@ if (player.infinitied > 0 && !player.challenges.includes("challenge1")) player.c
   if (player.eternityChalls === undefined) player.eternityChalls = {}
   if (player.effectiveStudies === undefined) player.effectiveStudies = []
   if (player.randomizerMode === undefined) player.randomizerMode = 1
+  if (player.randomizerECMode === undefined) player.randomizerECMode = 1
   if (player.randomizerSeed === undefined) player.randomizerSeed = ""
   if (player.eternityChallGoal === undefined) player.eternityChallGoal = new Decimal(Number.MAX_VALUE)
   if (player.currentEternityChall === undefined) player.currentEternityChall = ""
+  if (player.currentEternityMods === undefined) player.currentEternityMods = []
   if (player.eternityChallUnlocked === undefined) player.eternityChallUnlocked = 0
   if (player.options.chart === undefined) player.options.chart = {}
   if (player.options.chart.updateRate === undefined) player.options.chart.updateRate = 1000
@@ -364,6 +366,7 @@ if (player.version < 5) {
       }
   }
 
+  randomizeECs(true);
   transformSaveToDecimal();
   updateCosts();
   updateTickSpeed();
@@ -602,7 +605,9 @@ if (player.version < 5) {
       simulateTime(diff/1000)
   }
   if(player.randomizerSeed === "") respecTimeStudies();
-  if(player.randomizerSeed != "") setSeed(player.randomizerSeed);
+  if(player.randomizerSeed != "") setSeed(player.randomizerSeed); else {
+  defaultECSeed(); }
+  randomizeECs(!(player.randomizerSeed == ""));
   populateTree(player.randomizerMode, !(player.randomizerSeed == ""));
 }
 

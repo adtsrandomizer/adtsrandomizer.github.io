@@ -216,9 +216,9 @@ function canBuyDilationStudy(name) {
 }
 
 var all = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 91, 92, 93, 101, 102, 103, 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214, 221, 222, 223, 224, 225, 226, 227, 228, 231, 232, 233, 234]
-var studyCosts = [];
+
 function updateTimeStudyButtons() {
-  studyCosts = getCostsArray();
+  var studyCosts = getCostsArray();
   for (var i=0; i<all.length; i++) {
       if (!player.timestudy.studies.includes(all[i])) {
           if (canBuyStudy(all[i]) && studyCosts[i]<=player.timestudy.theorem) {
@@ -292,10 +292,10 @@ function studiesUntil(id) {
 
 
 function respecTimeStudies() {
-  studyCosts = getCostsArray();
-  for (var i=0; i<all.length; i++) {
+  var studyCosts = getCostsArray();
+  for (var i=0; i<all.length-1; i++) {
       if (player.timestudy.studies.includes(all[i])) {
-          player.timestudy.theorem += studyCosts[i];
+          player.timestudy.theorem += Number(studyCosts[i]);
       }
   }
   if (player.timestudy.studies.length === 0) giveAchievement("You do know how these work, right?")
@@ -351,9 +351,8 @@ function respecTimeStudies() {
       break;
   }
   player.eternityChallUnlocked = 0
-  updateTimeStudyButtons()
-  updateTheoremButtons()
-  drawStudyTree()
+  player.currentEternityMods = []
+  player.currentEternityChall = "";
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
   else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF"
 }

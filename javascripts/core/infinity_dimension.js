@@ -48,11 +48,11 @@ function updateInfinityDimensions() {
 }
 
 function DimensionProduction(tier) {
-  if (player.currentEternityChall == "eterc10") return new Decimal(0)
+  if (hasNerf('14')) return new Decimal(0)
   var dim = player["infinityDimension"+tier]
   var ret = dim.amount
-  if (player.currentEternityChall == "eterc11") return ret
-  if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
+  if (hasNerf('15')) return ret
+  if (hasBuff('2')) ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
   if (player.challenges.includes("postc6")) {
       let tick = new Decimal(player.tickspeed)
       if (player.dilation.active) {
@@ -69,7 +69,7 @@ function DimensionProduction(tier) {
 
 function DimensionPower(tier) {
   var dim = player["infinityDimension"+tier]
-  if (player.currentEternityChall == "eterc11") return new Decimal(1)
+  if (hasNerf('15')) return new Decimal(1)
   var mult = dim.power
 
   mult = mult.times(infDimPow)
@@ -104,7 +104,7 @@ function DimensionPower(tier) {
   if (player.effectiveStudies.includes(92)) mult = mult.times(Decimal.pow(2, 600/Math.max(player.bestEternity, 20)))
   if (player.effectiveStudies.includes(162)) mult = mult.times(1e11)
   if (ECTimesCompleted("eterc2") !== 0 && tier == 1) mult = mult.times(player.infinityPower.pow(1.5/(700-ECTimesCompleted("eterc2")*100)).min(new Decimal("1e100")).plus(1))
-  if (player.currentEternityChall == "eterc2") mult = mult.times(0)
+  if (hasNerf('2')) mult = mult.times(0)
 
   if (ECTimesCompleted("eterc4") !== 0) mult = mult.times(player.infinityPoints.pow(0.003 + ECTimesCompleted("eterc4")*0.002).min(new Decimal("1e200")))
 
@@ -189,7 +189,7 @@ var infCostMults = [null, 1e3, 1e6, 1e8, 1e10, 1e15, 1e20, 1e25, 1e30]
 var infPowerMults = [null, 50, 30, 10, 5, 5, 5, 5, 5]
 
 function buyManyInfinityDimension(tier) {
-  if (player.eterc8ids <= 0 && player.currentEternityChall == "eterc8") return false
+  if (player.eterc8ids <= 0 && hasNerf('11')) return false
   var dim = player["infinityDimension"+tier]
   if (player.infinityPoints.lt(dim.cost)) return false
   if (!player.infDimensionsUnlocked[tier-1]) return false
@@ -204,7 +204,7 @@ function buyManyInfinityDimension(tier) {
   dim.power = dim.power.times(infPowerMults[tier])
   dim.baseAmount += 10
 
-  if (player.currentEternityChall == "eterc8") player.eterc8ids-=1
+  if (hasNerf('11')) player.eterc8ids-=1
   document.getElementById("eterc8ids").textContent = "You have "+player.eterc8ids+" purchases left."
   return true
 }
