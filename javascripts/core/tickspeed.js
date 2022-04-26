@@ -1,5 +1,5 @@
 function canBuyTickSpeed() {
-  if (player.currentEternityChall == "eterc9") return false
+  if (hasNerf('13')) return false
   return canBuyDimension(3);
 }
 

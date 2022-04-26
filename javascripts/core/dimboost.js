@@ -134,12 +134,14 @@ function softReset(bulk) {
       replicanti: player.replicanti,
       effectiveStudies: player.effectiveStudies,
       randomizerMode: player.randomizerMode,
+      randomizerECMode: player.randomizerECMode,
       randomizer181: player.randomizer181,
       randomizerSeed: player.randomizerSeed,
       timestudy: player.timestudy,
       eternityChalls: player.eternityChalls,
       eternityChallGoal: player.eternityChallGoal,
       currentEternityChall: player.currentEternityChall,
+      currentEternityMods: player.currentEternityMods,
       eternityChallUnlocked: player.eternityChallUnlocked,
       etercreq: player.etercreq,
       autoIP: player.autoIP,
@@ -232,7 +234,7 @@ function getShiftRequirement(bulk) {
   if (player.effectiveStudies.includes(222)) mult -= 2
 
   if (tier == 8) amount += Math.ceil((player.resets+bulk - 4) * mult);
-  if (player.currentEternityChall == "eterc5") {
+  if (hasNerf('7')) {
       amount += Math.pow(player.resets+bulk, 3) + player.resets+bulk
   }
 

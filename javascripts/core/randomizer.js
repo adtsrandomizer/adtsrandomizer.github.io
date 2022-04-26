@@ -74,6 +74,32 @@ const TIME_STUDY_DESCRIPTIONS = [ null,
 // "Eternity Challenge 12<span>Requirement: Use only the Infinity Dimension path<span>Cost: 1 Time Theorem",
 ]
 
+const ETERNITY_CHALLENGE_NERFS = [ null,
+"Time Dimensions are disabled.", //1 1
+"Infinity Dimensions are disabled.", //2 2
+"Dimensions 5-8 don't produce anything.", //3 3
+"Dimensional sacrifice is disabled.", //3 4
+"All infinitied stat multipliers and generators are disabled.", //4 5
+"Galaxy cost increase scaling starts instantly (Normally at 100 galaxies).", //5 6
+"Dimension boost costs scaling is massively increased.", //5 7
+"You can't gain galaxies normally.", //6 8
+"First Time Dimension produces Eighth Infinity Dimension.", //7 9
+"First Infinity Dimension produces Seventh Antimatter Dimension.", //7 10
+"You can only upgrade Infinity Dimensions 50 times.", //8 11
+"You can only buy Replicanti upgrades 40 times.", //8 12
+"You can't buy tickspeed upgrades.", //9 13
+"Time Dimensions and Infinity Dimensions are disabled.", //10 14
+"All dimension multipliers are disabled except for the multipliers from Infinity power and dimension boosts (to normal dimensions).", //this challenge sucks
+"The game runs 1000x slower." //this challenge is the best EC i don't care about your opinion
+]
+
+const ETERNITY_CHALLENGE_BUFFS = [ null,
+"The cost of upgrading your max replicanti galaxies is massively reduced.", //6 1
+"Tickspeed affects all dimensions normally.", //7 2
+"Infinity power multiplies time dimensions with greatly reduced effect.", //9 3
+'You gain an immense boost from infinitied stat to normal dimensions<br> (infinitied^1000) Currently: <span id="ec10span">xX' //10
+]
+
 //This array contains numbers up to 58. It is shuffled on randomization, each TS being associated with one number here
 time_study_desc_seeded = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58];
@@ -84,6 +110,9 @@ time_study_costs_vanilla = [1, 3, 2, 2, 3, 2, 4, 6, 3, 3, 3, 4, 6, 5, 4, 6, 5, 4
 time_study_numbers_vanilla = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82, 83, 91, 92, 93, 101, 102, 103,
 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214,
 221, 222, 223, 224, 225, 226, 227, 228, 231, 232, 233, 234]
+
+ec_nerf_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+ec_buff_numbers = [1, 2, 3, 4]
 
 //Column 1: vanilla TS numbers | Column 2: associated TS index | Column 3: price
 seed = [ null,
@@ -146,6 +175,38 @@ seed = [ null,
 233, null, 500,
 234, null, 500
 ]
+
+ecseed = [ null,
+0, null, null, //nerf, nerf, buff for EC(index of nerf+1); 0 means nerf exists and will be randomized, null means it won't
+0, null, null, //ec2
+0, 0, null, //ec3
+0, null, null, //ec4
+0, 0, null, //ec5
+0, null, 0, //ec6
+0, 0, 0, //ec7
+0, null, null, //ec8
+0, null, 0, //ec9
+0, null, 0, //ec10
+0, null, null, //it which will not be named
+0, null, null //ec12 my beloved
+] //every nerf 0 will become a 1-14 on randomization, every buff 0 will become a 1-4 on randomization
+
+function getModifiers(ecindex) {
+    var index = 1 + (ecindex - 1) * 3;
+    let modifiers = [];
+    for(var i = 0; i <= 2; i++) {
+            modifiers.push(ecseed[index + i]);
+    }
+    return modifiers;
+}
+
+function hasNerf(n) {
+    return ((player.currentEternityMods[0] + "") === n || (player.currentEternityMods[1] + "") === n)
+}
+
+function hasBuff(n) {
+    return ((player.currentEternityMods[2] + "") === n)
+}
 
 function getCostsArray() { //get an array of every price in the tree
     var costs = [];
@@ -240,7 +301,6 @@ function populateTree(setting, seedg) {
         } catch(ex) { }
     }
     if(!seedg) player.randomizerSeed = getSeed();
-    save_game();
 }
 
 function randomizeStudies() {
@@ -252,6 +312,12 @@ function randomizeStudies() {
         player.timestudy.amcost.e = 20000;
         player.timestudy.ipcost.e = 100;
         player.timestudy.epcost = new Decimal(1);
+        defaultECSeed();
+        randomizeECs(true); //needed so that the ECs don't break
+        if(!(player.randomizerECMode - 1)) { //true only if 1 (enabled)
+        if(sed != "") setSeed(sed);
+        randomizeECs(!(sed == ""));
+        }
         if(sed == "") {
             populateTree(player.randomizerMode, false);
         } else {
@@ -259,7 +325,64 @@ function randomizeStudies() {
             populateTree(player.randomizerMode, true);
         }
         updateTimeStudyButtons();
+        updateEternityChallenges();
         save_game();
+    }
+}
+
+function randomizeECs(fromseed) {
+    ec_nerf_numbers = randomizeArray(ec_nerf_numbers);
+    ec_buff_numbers = randomizeArray(ec_buff_numbers);
+    let index = 1;
+    let nerfIndex = -1;
+    let buffIndex = -1;
+    for(var i = 1; i <= 12; i++) {
+        if(!fromseed) {
+        if(ecseed[index] != null) ecseed[index] = ec_nerf_numbers[++nerfIndex];
+        if(ecseed[index+1] != null) ecseed[index+1] = ec_nerf_numbers[++nerfIndex];
+        if(ecseed[index+2] != null) ecseed[index+2] = ec_buff_numbers[++buffIndex];
+        }
+        let result = "";
+            if(ecseed[index] != null) result = result + ETERNITY_CHALLENGE_NERFS[ecseed[index]] + " ";
+            if(ecseed[index + 1] != null) result = result + ETERNITY_CHALLENGE_NERFS[ecseed[index + 1]] + " ";
+            if(ecseed[index + 2] != null) result = result + ETERNITY_CHALLENGE_BUFFS[ecseed[index + 2]] + " ";
+            result = result.replace(" undefined ", " ");
+            result = result.replace(" undefined ", " ");
+            document.getElementById("eterc"+i+"text").innerHTML = result;
+        index += 3;
+    }
+}
+
+function defaultECSeed() {
+
+ecseed = [ null,
+1, null, null, //nerf, nerf, buff for EC(index of nerf+1); 0 means nerf exists and will be randomized, null means it won't
+2, null, null, //ec2
+3, 4, null, //ec3
+5, null, null, //ec4
+6, 7, null, //ec5
+8, null, 1, //ec6
+9, 10, 2, //ec7
+11, 12, null, //ec8
+13, null, 3, //ec9
+14, null, 4, //ec10
+15, null, null, //it which will not be named
+16, null, null //ec12 my beloved
+]
+}
+
+function getECSeed() {
+    var sed = "";
+    for(var i = 0; i < ecseed.length; i++) {
+        sed = sed + ecseed[i] + "|";
+    }
+    return sed;
+}
+
+function setECSeed(ns) {
+    var nss = ns.split("|");
+    for(var i = 0; i < ecseed.length; i++) {
+        ecseed[i] = nss[i];
     }
 }
 
@@ -272,6 +395,8 @@ function getSeed() {
     for(var i = 0; i < time_study_desc_seeded.length; i++) {
         sed = sed + time_study_desc_seeded[i] + "|";
     }
+    sed = sed + "$";
+    sed = sed + getECSeed();
     return sed;
 }
 
@@ -300,13 +425,17 @@ function copySeed() {
 function setSeed(ns) {
     var blb = ns.split("$")[0];
     var blbl = ns.split("$")[1];
+    var ecec = ns.split("$")[2];
     var blblb = blb.split("|");
     var blblbl = blbl.split("|");
+    if(ecec !== undefined) var blblblb = ecec.split("|");
     for(var i = 0; i < blblb.length; i++) {
-        if(blblb[i] === "null") { seed[i] = null; } else {
-        seed[i] = blblb[i]; }
+        if(blblb[i] === "null") { seed[i] = null; }
+        else { seed[i] = blblb[i]; }
     }
     for(var i = 0; i < blblbl.length; i++) {
         time_study_desc_seeded[i] = blblbl[i];
     }
+    if(ecec !== undefined) setECSeed(ecec);
+    player.randomizerSeed = ns;
 }
